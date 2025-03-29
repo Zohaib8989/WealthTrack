@@ -1,0 +1,62 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerMobileState/1.2.0/schema.json",
+  "objects": {
+    "total": [],
+    "values": [],
+    "columnFormatting": [],
+    "columnWidth": [
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "72.63376401083963D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "2. Transactions.Date"
+        }
+      },
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "136.65953868880771D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "2. Transactions.Category"
+        }
+      },
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "83.09159801877087D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "Sum(2. Transactions.Transaction Amount)"
+        }
+      }
+    ],
+    "columnHeaders": [],
+    "grid": []
+  },
+  "position": {
+    "x": 2.6648018394632409,
+    "y": 1523.5179139196534,
+    "z": 20000,
+    "height": 429.15553841456557,
+    "width": 318.48708063026146,
+    "tabOrder": 20000
+  }
+}

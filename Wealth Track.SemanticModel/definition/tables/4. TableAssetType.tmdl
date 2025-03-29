@@ -1,0 +1,42 @@
+table '4. TableAssetType'
+	lineageTag: 8d01a724-f26a-470f-9c89-5fbd8c1ca467
+
+	column Type
+		lineageTag: eaa0c638-67c7-472c-9748-65a2b9a281e5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		lineageTag: 20d2450d-ed5d-4ae9-8ffe-a5def8cbbdae
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Amount]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '4. TableAssetType' = calculated
+		mode: import
+		source = ```
+				
+				UNION(
+				    SELECTCOLUMNS(
+				        ROW("Type", "Current", "Amount", [5. Liquid Assets]),
+				        "Type", "Current",
+				        "Amount", [5. Liquid Assets]
+				    ),
+				    SELECTCOLUMNS(
+				        ROW("Type", "Non Current", "Amount", [5. Non Current Assets]),
+				        "Type", "Non Current",
+				        "Amount", [5. Non Current Assets]
+				    )
+				)
+				
+				```
+
+	annotation PBI_Id = f3f184fc724a45f394e02703715a9f9c
+

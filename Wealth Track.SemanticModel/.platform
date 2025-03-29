@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Wealth Track"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "75ea4906-088e-456a-9ead-fadf890ec78a"
+  }
+}

@@ -1,0 +1,43 @@
+table '3. AED'
+	lineageTag: dbc92ad1-ce04-4087-b748-824160cac77d
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 00a80ade-7c1a-443e-9fe7-887c38864d86
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 001f933a-2dd7-4405-b038-4b599459672b
+			defaultHierarchy: LocalDateTable_0a7b2a7a-46e4-4a1d-9d92-fb9127d18164.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Close
+		dataType: double
+		lineageTag: f6a06d3b-89db-4bc0-90f2-bd72f12217f8
+		summarizeBy: sum
+		sourceColumn: Close
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '3. AED' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://docs.google.com/spreadsheets/d/1VOATRWiNd6tHXjQwL6jE9_2Gm6U-xghIuwqvaDDaYcc/gviz/tq?tqx=out:csv&sheet=AED"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Close", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,1963 @@
+table '0. Measures'
+	lineageTag: 8c85fc4d-0635-4324-95cf-4329409c0922
+
+	measure 'Income Title' = ```
+			
+			    "Income for " &
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: 1. Income
+		lineageTag: c2838062-45b0-4513-9bda-c4c3e6cfeb13
+
+	measure Income = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period]),
+			        
+			        // Year-To-Date (YTD)
+			        "YTD", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M",
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        0 // Default value if no selection
+			    )
+			
+			```
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 1. Income
+		lineageTag: 00818d77-04e7-47c0-b61f-9fe8eaf0c8ae
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure 'Net Income' = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period]),
+			        
+			        // Year-To-Date (YTD)
+			        "YTD", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1)
+			                    )
+			                )
+			            ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M",
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Getting"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        0 // Default value if no selection
+			    )
+			
+			```
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 3. Profitability
+		lineageTag: 27c951a1-52c4-4949-ae94-f944e3b0bf8b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure 'Net Income Title' = ```
+			
+			    "Net Income for " &
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: 3. Profitability
+		lineageTag: 9d43395b-3df1-47ee-924e-e6d3e4c8b223
+
+	measure 'Income Subtitle' = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period]),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ),
+			                    12
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ),
+			                    6
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ),
+			                    3
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			
+			        // Year-to-Date (YTD)
+			        "YTD", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                        '1. CalendarTable'[Date] <= TODAY()
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                            '1. CalendarTable'[Date] <= TODAY()
+			                        )
+			                    ),
+			                    MONTH(TODAY())  // Divide by the Currency of months elapsed in the current year
+			                )
+			            ), 
+			            "#,##0"
+			        )
+			    )
+			```
+		displayFolder: 1. Income
+		lineageTag: 77b81165-2f59-4366-8c8b-3744b6dc60d4
+
+	measure Spending = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period]),
+			        
+			        // Year-To-Date (YTD)
+			        "YTD", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M",
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER(
+			                        '2. Transactions',
+			                        '2. Transactions'[Type] = "Spending"
+			                    ),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] < EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ),
+			        
+			        0 // Default value if no selection
+			    )
+			
+			```
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 2. Spending
+		lineageTag: 79db31fc-ac5a-450a-ad72-1133624ee731
+
+		annotation PBI_FormatHint = {"currencyCulture":"ur-PK"}
+
+	measure 'Expense Ratio' = ```
+			
+			    DIVIDE(
+			        [Spending],
+			        [Income]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 7. Ratios
+		lineageTag: d1a80684-3c76-4a0b-987f-cf58b288d0d4
+
+	measure Placeholder0 = 0
+		formatString: 0
+		displayFolder: 0. Supporting Measures
+		lineageTag: 0ae56923-0012-4ab5-89d2-4a54ccf5b0ef
+
+	measure VisualControl = ```
+			
+			    IF(
+			        MIN('4. TableTitleType'[Title Type]) = "Income", 
+			        "Net Income", 
+			        "Spending"
+			    )
+			
+			```
+		displayFolder: 0. Supporting Measures
+		lineageTag: d0943edc-f241-4330-a60f-2ee9f38b80ee
+
+	measure 'Net Income Subtitle' = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period]),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ) -
+			                ABS(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    )
+			                ),
+			                    12
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ) -
+			                ABS(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    )
+			                ),
+			                    6
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ) -
+			                ABS(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    )
+			                ),
+			                    3
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			
+			        // Year-to-Date (YTD)
+			        "YTD", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                        '1. CalendarTable'[Date] <= TODAY()
+			                    )
+			                ) -
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                        '1. CalendarTable'[Date] <= TODAY()
+			                    )
+			                )
+			            )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Getting"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                            '1. CalendarTable'[Date] <= TODAY()
+			                        )
+			                    ) -
+			                ABS(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                            '1. CalendarTable'[Date] <= TODAY()
+			                        )
+			                    )
+			                ),
+			                    MONTH(TODAY())
+			                )
+			            ), 
+			            "#,##0"
+			        )
+			    )
+			
+			```
+		displayFolder: 3. Profitability
+		lineageTag: ec42fea3-076e-4191-adb6-f4d464cb8b5b
+
+	measure 'Net Margin Dynamic' = ```
+			
+			    DIVIDE(
+			        [Net Income],
+			        [Income]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 3. Profitability
+		lineageTag: b36c7d69-780f-46d4-8b54-7f4d685db7aa
+
+	measure 'Spending Subtitle' = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period]),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -13) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ),
+			                    12
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ),
+			                    6
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                        '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -4) + 1 &&
+			                            '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			                        )
+			                    ),
+			                    3
+			                )
+			            ), 
+			            "#,##0"
+			        ),
+			
+			        // Year-to-Date (YTD)
+			        "YTD", 
+			        "Total: Rs " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM('2. Transactions'[Transaction Amount]),
+			                    FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                    FILTER(
+			                        '1. CalendarTable',
+			                        '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                        '1. CalendarTable'[Date] <= TODAY()
+			                    )
+			                )
+			            ), 
+			            "#,##0"
+			        ) & 
+			        " | Average: Rs " & 
+			        FORMAT(
+			            ABS(
+			                DIVIDE(
+			                    CALCULATE(
+			                        SUM('2. Transactions'[Transaction Amount]),
+			                        FILTER('2. Transactions', '2. Transactions'[Type] = "Spending"),
+			                        FILTER(
+			                            '1. CalendarTable',
+			                            '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                            '1. CalendarTable'[Date] <= TODAY()
+			                        )
+			                    ),
+			                    MONTH(TODAY())  // Divide by the Currency of months elapsed in the current year
+			                )
+			            ), 
+			            "#,##0"
+			        )
+			    )
+			```
+		displayFolder: 2. Spending
+		lineageTag: 3c54d11c-aeae-4a54-87c1-af357216e9cc
+
+	measure 'Giving YTD' = ```
+			
+			    ABS(
+			        CALCULATE(
+			            SUM('2. Transactions'[Transaction Amount]),
+			            FILTER(
+			                '2. Transactions',
+			                '2. Transactions'[Type] = "Giving" &&
+			                '2. Transactions'[Category] = "Income Portion"
+			            ),
+			            FILTER(
+			                '1. CalendarTable',
+			                '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			            )
+			        )
+			    )
+			
+			```
+		formatString: "Rs"#,0;-"Rs"#,0;"Rs"#,0
+		displayFolder: 4. Giving
+		lineageTag: 87aae426-afc0-4e25-b637-921f456d347a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure 'SVC Income YTD' = ```
+			
+			    ABS(
+			        CALCULATE(
+			            SUM('2. Transactions'[Transaction Amount]),
+			            FILTER(
+			                '2. Transactions',
+			                '2. Transactions'[Type] = "Getting" &&
+			                '2. Transactions'[Category] = "Contractual Income"
+			            ),
+			            FILTER(
+			                '1. CalendarTable',
+			                '1. CalendarTable'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			                '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			            )
+			        )
+			    )
+			
+			```
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 4. Giving
+		lineageTag: 528a8045-57a4-4d1e-a15e-1208d0d0da7e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure 'Giving Placeholder' = 1 - [Giving %]
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 4. Giving
+		lineageTag: 53607ee1-e00f-4547-a287-7a984dc646a3
+
+	measure 'Giving %' = ```
+			
+			    DIVIDE(
+			        [Giving YTD],
+			        [SVC Income YTD]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 4. Giving
+		lineageTag: 1118af64-cd7f-4958-90de-af579ec0189c
+
+	measure 'Giving L6M' = ```
+			
+			    ABS(
+			        CALCULATE(
+			            SUM('2. Transactions'[Transaction Amount]),
+			            FILTER(
+			                '2. Transactions',
+			                '2. Transactions'[Type] = "Giving" &&
+			                '2. Transactions'[Category] = "Income Portion"
+			            ),
+			            FILTER(
+			                '1. CalendarTable',
+			                '1. CalendarTable'[Date] >= EOMONTH(TODAY(), -7) + 1 &&
+			                '1. CalendarTable'[Date] <= EOMONTH(TODAY(), -1)
+			            )
+			        )
+			    )
+			
+			```
+		displayFolder: 4. Giving
+		lineageTag: 4be53848-e4fd-4143-80e1-9c35cfb09834
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '1. Cash LCY' = [1. Cash LCY AED] + [1. Cash LCY GBP] + [1. Cash FCY PKR] + [1. Cash LCY SAR] + [1. Cash LCY USD] + [1. Cash LCY MYR]
+		formatString: "Rs"#,0;-"Rs"#,0;"Rs"#,0
+		displayFolder: 5. Assets
+		lineageTag: eb483d45-eeff-4d29-9461-36f3176fc05e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure '0. Assets' = [1. Cash LCY] + [3. Real Estate] + [2. Gold] + [Automobile] + [Others] + [Receivables]
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 5. Assets
+		lineageTag: ef3d6106-e140-47bf-b700-0afe9e1eb984
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure '3. Real Estate' = ```
+			
+			CALCULATE(
+			    ABS(
+			        CALCULATE(
+			            SUM('2. Transactions'[Transaction Amount]),
+			            FILTER(
+			                '2. Transactions',
+			                '2. Transactions'[Type] = "Investing" &&
+			                '2. Transactions'[Category] = "Real Estate"
+			            )
+			        )
+			    ),
+			    FILTER(
+			        ALLSELECTED('1. CalendarTable'[Date]),
+			        ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			    )
+			)
+			
+			```
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 5. Assets
+		lineageTag: b2580971-b16b-4495-ae91-a00f4a6b6463
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure '2. Gold' = ```
+			
+			CALCULATE(
+			    ABS(
+			        CALCULATE(
+			            SUM('2. Transactions'[Transaction Amount]),
+			            FILTER(
+			                '2. Transactions',
+			                '2. Transactions'[Type] = "Investing" &&
+			                '2. Transactions'[Category] = "Gold"
+			            )
+			        )
+			    ),
+			    FILTER(
+			        ALL('1. CalendarTable'[Date]),
+			        ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			    )
+			)
+			
+			```
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 5. Assets
+		lineageTag: 3b5dfd78-6946-43e4-ba28-afe09e09212e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure Electronics = 0
+		formatString: 0
+		displayFolder: 5. Assets
+		lineageTag: 0347e555-c123-4057-bedd-201db0d4198f
+
+	measure Receivables = ```
+			
+			    ABS(
+			        CALCULATE(
+			            SUM('2. Transactions'[Transaction Amount]),
+			            '2. Transactions'[Type] = "Helping"
+			        )
+			    )
+			```
+		formatString: 0
+		displayFolder: 5. Assets
+		lineageTag: 825b0c19-c279-4124-a40e-fbe53077bc7b
+
+	measure Automobile = 0
+		formatString: 0
+		displayFolder: 5. Assets
+		lineageTag: b1d8d286-2607-4977-84d3-4b9a3f43f839
+
+	measure Others = 0
+		formatString: 0
+		displayFolder: 5. Assets
+		lineageTag: b1c39926-b7a3-4e20-b3f7-cae1576c9cf7
+
+	measure '1. Cash FCY PKR' = ```
+			
+			    CALCULATE(
+			        CALCULATE(
+			            SUM('2. Transactions'[Wallet Amount]),
+			            FILTER(
+			                '4. Accounts',
+			                '4. Accounts'[AccountType] = "Cash" &&
+			                '4. Accounts'[AccountCurrency] = "PKR"
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			```
+		formatString: "Rs"#,0;-"Rs"#,0;"Rs"#,0
+		displayFolder: 5. Assets
+		lineageTag: d3b4ebfe-a243-4b9a-9183-ab720a658a43
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure '1. Cash FCY USD' = ```
+			
+			    CALCULATE(
+			        CALCULATE(
+			            SUM('2. Transactions'[Wallet Amount]),
+			            FILTER(
+			                '4. Accounts',
+			                '4. Accounts'[AccountType] = "Cash" &&
+			                '4. Accounts'[AccountCurrency] = "USD"
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: 5. Assets
+		lineageTag: 6da13f39-53bd-44da-b0db-cf8ed2fcf3cb
+
+	measure '1. Cash FCY GBP' = ```
+			
+			    CALCULATE(
+			        CALCULATE(
+			            SUM('2. Transactions'[Wallet Amount]),
+			            FILTER(
+			                '4. Accounts',
+			                '4. Accounts'[AccountType] = "Cash" &&
+			                '4. Accounts'[AccountCurrency] = "GBP"
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			```
+		formatString: "£"#,0;-"£"#,0;"£"#,0
+		displayFolder: 5. Assets
+		lineageTag: 0b0fee00-23de-4271-8464-526dd881143d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure '1. Cash FCY SAR' = ```
+			
+			    CALCULATE(
+			        CALCULATE(
+			            SUM('2. Transactions'[Wallet Amount]),
+			            FILTER(
+			                '4. Accounts',
+			                '4. Accounts'[AccountType] = "Cash" &&
+			                '4. Accounts'[AccountCurrency] = "SAR"
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			```
+		formatString: #,0
+		displayFolder: 5. Assets
+		lineageTag: f0668fe8-a42a-413d-a045-959de9c8c348
+
+	measure '1. Cash FCY AED' = ```
+			
+			    CALCULATE(
+			        CALCULATE(
+			            SUM('2. Transactions'[Wallet Amount]),
+			            FILTER(
+			                '4. Accounts',
+			                '4. Accounts'[AccountType] = "Cash" &&
+			                '4. Accounts'[AccountCurrency] = "AED"
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			```
+		formatString: "AED"#,0;-"AED"#,0;"AED"#,0
+		displayFolder: 5. Assets
+		lineageTag: c7080052-26b0-44a9-9cae-06ce66af0001
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-AE"}
+
+	measure '1. Cash LCY USD' = [1. Cash FCY USD] * LOOKUPVALUE('3. USD'[Close], '3. USD'[Date], MAX('2. Transactions'[Date]))
+		formatString: 0
+		displayFolder: 5. Assets
+		lineageTag: 79332ef5-16fe-4679-acee-a41306456491
+
+	measure '1. Cash LCY SAR' = [1. Cash FCY SAR] * LOOKUPVALUE('3. SAR'[Close], '3. SAR'[Date], MAX('2. Transactions'[Date]))
+		formatString: 0
+		displayFolder: 5. Assets
+		lineageTag: a24dff48-a4cf-4e12-a9ab-8544b15dcfcf
+
+	measure '1. Cash LCY GBP' = [1. Cash FCY GBP] * LOOKUPVALUE('3. GBP'[Close], '3. GBP'[Date], MAX('2. Transactions'[Date]))
+		formatString: 0
+		displayFolder: 5. Assets
+		lineageTag: b2904a09-e1d7-4e4f-a40b-f57c3df87bb1
+
+	measure Investments = [2. Gold] + [3. Real Estate]
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 5. Assets
+		lineageTag: 5b40d258-e507-47f7-b0cc-ae886f41bb96
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure '1. Cash LCY AED' = [1. Cash FCY AED] * LOOKUPVALUE('3. AED'[Close], '3. AED'[Date], MAX('2. Transactions'[Date]))
+		displayFolder: 5. Assets
+		lineageTag: f92a8875-0bb5-4466-8371-ef2318d2cc18
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "RunningTotal"
+				}
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Worth' = [0. Assets] -  [Liabilities]
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 5. Assets
+		lineageTag: 63d4a53b-60a8-42cd-bcda-91ce428b8dfe
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure Liabilities =
+			
+			CALCULATE(
+				    CALCULATE(
+			        SUM('2. Transactions'[Transaction Amount]),
+			    FILTER(
+			        '2. Transactions',
+			        '2. Transactions'[Type] = "Borrowing" &&
+			        '2. Transactions'[Category] = "Debt Received"
+			    )) +
+			    CALCULATE(
+			        SUM('2. Transactions'[Transaction Amount]),
+			    FILTER(
+			        '2. Transactions',
+			        '2. Transactions'[Type] = "Borrowing" &&
+			        '2. Transactions'[Category] = "Debt Payment"
+			    )) -
+			    CALCULATE(
+			        SUM('2. Transactions'[Transaction Amount]),
+			        CONTAINSSTRING('4. Accounts'[Account], "Credit Card")
+			    ),
+				FILTER(
+					ALLSELECTED('1. CalendarTable'[Date]),
+					ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+				)
+			)
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		displayFolder: 6. Liabilities
+		lineageTag: 573660ab-7bba-4312-b29d-dd8ee59159d2
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "RunningTotal"
+				}
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure 'CC Debt' = ```
+			
+			    CALCULATE(
+			        SUM('2. Transactions'[Transaction Amount]),
+			        '2. Transactions'[Payee Name] = "Standard Chartered Bank" &&
+			        '2. Transactions'[Type] = "Borrowing"
+			    ) -
+			    CALCULATE(
+			        SUM('2. Transactions'[Transaction Amount]),
+			    FILTER(
+			        '4. Accounts',
+			        '4. Accounts'[Account] = "Credit Card - SCB 0817"
+			    ))
+			```
+		formatString: "Rs"#,0;-"Rs"#,0;"Rs"#,0
+		displayFolder: 6. Liabilities
+		lineageTag: 393826c8-af00-4653-875a-8797f4034d42
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure 'Personal Debt' = [Liabilities] - [CC Debt]
+		formatString: "Rs"#,0;-"Rs"#,0;"Rs"#,0
+		displayFolder: 6. Liabilities
+		lineageTag: 9f0a7195-cfe1-4701-8251-880e97dfc586
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure 'CC KPI' = "Rs " & FORMAT([CC Debt], "#,##0") & " | " & FORMAT([CC Debt %], "0.00%")
+		displayFolder: 6. Liabilities
+		lineageTag: 6503715c-1529-45fc-a773-031a470e0a22
+
+	measure 'CC Debt %' = ```
+			
+			    DIVIDE(
+			        [CC Debt],
+			        [Liabilities]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 6. Liabilities
+		lineageTag: 5b7a5eaf-6185-4a43-8f07-878c290c4da8
+
+	measure 'Personal Debt KPI' = "Rs " & FORMAT([Personal Debt], "#,##0") & " | " & FORMAT([Personal Debt %], "0.00%")
+		displayFolder: 6. Liabilities
+		lineageTag: 29860a58-687d-46ae-a332-2faec499297f
+
+	measure 'Personal Debt %' = ```
+			
+			    DIVIDE(
+			        [Personal Debt],
+			        [Liabilities]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 6. Liabilities
+		lineageTag: 6e773468-78b3-47f3-910b-e0128de87575
+
+	measure '2. Gold PKR' = [2. Gold USD] * LOOKUPVALUE('3. USD'[Close], '3. USD'[Date], MAX('2. Transactions'[Date]))
+		displayFolder: 5. Assets
+		lineageTag: de36caad-077a-4699-9932-a5d3fa6731f5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3. Real Estate 0' = ```
+			
+			    ABS(
+			        CALCULATE(
+			            SUM('2. Transactions'[Transaction Amount]),
+			            FILTER(
+			                '2. Transactions',
+			                '2. Transactions'[Type] = "Investing" &&
+			                '2. Transactions'[Category] = "Real Estate"
+			            )
+			        )
+			    )
+			```
+		displayFolder: 5. Assets
+		lineageTag: 9ad3e983-fb17-46df-a8a2-ba96017c1b24
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Worth Subheading' = "**Rs " & FORMAT([Net Worth], "#,##" & " **")
+		displayFolder: 5. Assets
+		lineageTag: 9359c266-95e6-48ba-a437-0e8d7d0d9d78
+
+	measure '1. Cash PKR' = ```
+			
+			CALCULATE(
+			    CALCULATE(
+			        SUM('2. Transactions'[Wallet Amount]),
+			        FILTER(
+			            '4. Accounts',
+			            '4. Accounts'[AccountType] = "Cash" &&
+			            '4. Accounts'[AccountCurrency] = "PKR"
+			        )
+			    ),
+			    FILTER(
+			        ALL('1. CalendarTable'),
+			        '1. CalendarTable'[Date] <= MAX('1. CalendarTable'[Date])
+			    )
+			)
+			
+			```
+		displayFolder: 5. Assets
+		lineageTag: c8650476-4001-49f7-b200-bac75d769368
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. Gold USD' = ```
+			
+			    CALCULATE(
+			            CALCULATE(
+			            SUM('2. Transactions'[Gold Weight]),
+			            '2. Transactions'[Type] = "Investing" &&
+			            '2. Transactions'[Category] = "Gold"
+			            ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    ) * LOOKUPVALUE('3. GOLD'[Per Gram], '3. GOLD'[Date], MAX('2. Transactions'[Date]))
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: 5. Assets
+		lineageTag: 2406a125-41f8-4c92-b7c1-4d928596bd2e
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "RunningTotal"
+				}
+
+		changedProperty = FormatString
+
+	measure LastUpdated = "Last Updated: " & FORMAT(NOW(), "DDDD MMMM DD, YYYY")
+		displayFolder: 0. Supporting Measures
+		lineageTag: 5f1ab28e-e0e1-453d-9781-8cc4fcd0d897
+
+	measure MaxAssetValue = ```
+			
+			MAXX(
+			    ALL('1. CalendarTable'[Date]),
+			    [0. Assets]
+			)
+			
+			```
+		displayFolder: 0. Supporting Measures
+		lineageTag: b06a5a08-338d-43c6-b949-56a83e47bce8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure HighlightMaxMonth = ```
+			
+			IF(
+			    [0. Assets] = [MaxAssetValue],
+			    "#0000FF",  // Use the hex code for your highlight color, e.g., "#FF0000" for red
+			    "DefaultColor"     // Use the hex code for your default color, e.g., "#0000FF" for blue
+			)
+			
+			```
+		displayFolder: 0. Supporting Measures
+		lineageTag: 04b74c76-30ab-4cc3-b8ca-aa2daf06693a
+
+	measure '5. Liquid Assets' = [1. Cash LCY] + [2. Gold]
+		formatString: "Rs"#,0;-"Rs"#,0;"Rs"#,0
+		displayFolder: 5. Assets
+		lineageTag: 585b779b-8366-425b-8a49-82f55eec005a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure '5. Non Current Assets' = [0. Assets] - [5. Liquid Assets]
+		formatString: "Rs"#,0;-"Rs"#,0;"Rs"#,0
+		displayFolder: 5. Assets
+		lineageTag: 73d17133-6324-4d08-9618-ab6a368f75c9
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	measure '5. Liquid Assets %' = ```
+			
+			    DIVIDE(
+			        [5. Liquid Assets],
+			        [0. Assets]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 5. Assets
+		lineageTag: a4c8c5e5-7534-406d-a5c8-f6ae9899e9ec
+
+	measure '5. LiquidAssetTitle' = "Current" & " | " & FORMAT([5. Liquid Assets %] , "#,##%")
+		displayFolder: 5. Assets
+		lineageTag: e4396135-7d6b-4cfc-b8d3-303a211f1277
+
+	measure '5. NonCurrentAssetTitle' = "Non Current" & " | " & FORMAT([5. Non Current Assets %] , "#,##%")
+		displayFolder: 5. Assets
+		lineageTag: c715a68f-9a6c-47f0-9394-bd18ed507528
+
+	measure '5. Non Current Assets %' = ```
+			
+			    DIVIDE(
+			        [5. Non Current Assets],
+			        [0. Assets]
+			    )
+			```
+		displayFolder: 5. Assets
+		lineageTag: 3ca5d7c7-2573-45b4-88ea-800776d0ac7e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '5. Assets Invested' = [2. Gold] + [3. Real Estate]
+		displayFolder: 5. Assets
+		lineageTag: 089dbe09-656b-47cc-a619-36bbf2e4dfbb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '5. Assets Not Invested' = [0. Assets] - [5. Assets Invested]
+		displayFolder: 5. Assets
+		lineageTag: 897149c8-d8bb-4b2f-a97f-da3ae289781a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '5. Assets Invested %' = ```
+			
+			    DIVIDE(
+			        [5. Assets Invested],
+			        [0. Assets]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 5. Assets
+		lineageTag: c4919a71-eec8-4f87-a979-6bb924fc0ca1
+
+	measure '5. Assets Not Invested %' = ```
+			
+			    DIVIDE(
+			        [5. Assets Not Invested],
+			        [0. Assets]
+			    )
+			```
+		displayFolder: 5. Assets
+		lineageTag: 7ef85b81-b258-43ff-9f40-2c4b45f54ee4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '5. AssetsInvestedTitle' = "Invested" & " | " & FORMAT([5. Assets Invested %], "#,##%")
+		displayFolder: 5. Assets
+		lineageTag: 20de40da-2bab-42ff-ade2-effa489a3a7f
+
+	measure '5. AssetsNotInvestedTitle' = "Not Invested" & " | " & FORMAT([5. Assets Not Invested %], "#,##%")
+		displayFolder: 5. Assets
+		lineageTag: e97ee19d-a061-4901-8f91-f7576e4cb996
+
+	measure '1. Cash FCY' = [1. Cash FCY AED] + [1. Cash FCY GBP] + [1. Cash FCY PKR] + [1. Cash FCY SAR] + [1. Cash FCY USD] + [1. Cash FCY MYR]
+		displayFolder: 5. Assets
+		lineageTag: 7f990827-ede7-4fbc-9373-02962e8f1ac8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '1. Cash FCY in PKR' = [1. Cash LCY AED] + [1. Cash LCY SAR] + [1. Cash LCY GBP] + [1. Cash LCY USD] + [1. Cash LCY MYR]
+		displayFolder: 5. Assets
+		lineageTag: 238555a3-bddd-48a9-8b11-43b394671e2f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2. Gold Delta %' = ```
+			
+			
+			VAR Gold_Previous_Month = 
+			    CALCULATE(
+			        [2. Gold], 
+			        DATEADD('1. CalendarTable'[Date], -1, MONTH)
+			    )
+			
+			VAR Gold_Current_Month =
+			    CALCULATE(
+			        ABS(
+			            CALCULATE(
+			                SUM('2. Transactions'[Transaction Amount]),
+			                FILTER(
+			                    '2. Transactions',
+			                    '2. Transactions'[Type] = "Investing" &&
+			                    '2. Transactions'[Category] = "Gold"
+			                )
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			
+			VAR Gold_Monthly_Change = 
+			    IF(
+			        NOT(ISBLANK(Gold_Previous_Month)),
+			        DIVIDE(Gold_Current_Month - Gold_Previous_Month, Gold_Previous_Month, 0),
+			        BLANK()
+			    )
+			
+			VAR Change = Gold_Monthly_Change
+			
+			RETURN
+			    IF(
+			        NOT(ISBLANK(Change)),
+			        IF(
+			            Change > 0,
+			            "▲ " & FORMAT(Change, "0.00%"),   // Arrow up for increase
+			            "▼ " & FORMAT(Change, "0.00%")    // Arrow down for decrease
+			        ),
+			        "No Change"
+			    )
+			
+			```
+		displayFolder: 5. Assets
+		lineageTag: ee403147-da9c-4dbb-b49f-0e17ff51c838
+
+	measure 'Investment Delta %' = ```
+			
+			
+			VAR Gold_Previous_Month = 
+			    CALCULATE(
+			        [2. Gold], 
+			        DATEADD('1. CalendarTable'[Date], -1, MONTH)
+			    )
+			
+			VAR RealEstate_Previous_Month = 
+			    CALCULATE(
+			        [3. Real Estate], 
+			        DATEADD('1. CalendarTable'[Date], -1, MONTH)
+			    )
+			
+			VAR Gold_Current_Month =
+			    CALCULATE(
+			        ABS(
+			            CALCULATE(
+			                SUM('2. Transactions'[Transaction Amount]),
+			                FILTER(
+			                    '2. Transactions',
+			                    '2. Transactions'[Type] = "Investing" &&
+			                    '2. Transactions'[Category] = "Gold"
+			                )
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			
+			VAR RealEstate_Current_Month =
+			    CALCULATE(
+			        ABS(
+			            CALCULATE(
+			                SUM('2. Transactions'[Transaction Amount]),
+			                FILTER(
+			                    '2. Transactions',
+			                    '2. Transactions'[Type] = "Investing" &&
+			                    '2. Transactions'[Category] = "Real Estate"
+			                )
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			
+			VAR Previous_Month = RealEstate_Previous_Month + Gold_Previous_Month
+			
+			VAR Current_Month = RealEstate_Current_Month + Gold_Current_Month
+			
+			VAR Monthly_Change = 
+			    IF(
+			        NOT(ISBLANK(Previous_Month)),
+			        DIVIDE(Current_Month - Previous_Month, Previous_Month, 0),
+			        BLANK()
+			    )
+			
+			VAR Change = Monthly_Change
+			
+			RETURN
+			    IF(
+			        NOT(ISBLANK(Change)),
+			        IF(
+			            Change > 0,
+			            "▲ " & FORMAT(Change, "0.00%"),   // Arrow up for increase
+			            "▼ " & FORMAT(Change, "0.00%")    // Arrow down for decrease
+			        ),
+			        "No Change"
+			    )
+			
+			```
+		displayFolder: 5. Assets
+		lineageTag: 0eac4901-9def-48a8-995b-ac3370b59b31
+
+	measure Greeting1 = ```
+			
+			VAR CurrentHour = HOUR(NOW())
+			RETURN 
+			    SWITCH(
+			        TRUE(),
+			        CurrentHour < 12, "Good Morning, ",
+			        CurrentHour < 18, "Good Afternoon,",
+			        "Good Evening,"
+			    )
+			
+			```
+		displayFolder: 0. Supporting Measures
+		lineageTag: 0aaa72bf-e486-46db-bd29-6afb4829d5d6
+
+	measure End_Date = TODAY() - 10
+		formatString: General Date
+		displayFolder: 0. Supporting Measures
+		lineageTag: 59917123-9384-4b9e-8a21-4e83716d7a4e
+
+	measure Start_Date = DATE(YEAR(TODAY()), MONTH(TODAY()) - 11, 1)
+		formatString: General Date
+		displayFolder: 0. Supporting Measures
+		lineageTag: a32a5e59-aa0b-422d-824a-eddf9c13f2b3
+
+	measure 'Quick Ratio' = ```
+			
+			    DIVIDE(
+			        [5. Liquid Assets],
+			        [Liabilities]
+			    )
+			```
+		formatString: 0
+		displayFolder: 7. Ratios
+		lineageTag: ba36a54a-0f18-4cd6-ab5f-24ea48678e68
+
+	measure 'Spend Ratio' = ```
+			
+			    DIVIDE(
+			        [Spending],
+			        [Income]
+			    )
+			```
+		formatString: 0%;-0%;0%
+		displayFolder: 7. Ratios
+		lineageTag: f7717c89-cc22-475d-9272-b619dfc5f340
+
+	measure 'Giving Ratio' = 0
+		formatString: 0
+		displayFolder: 7. Ratios
+		lineageTag: 19bb48e7-812b-4bce-b802-02fe65436607
+
+	measure 'Debt to Income Ratio' = 0
+		formatString: 0
+		displayFolder: 7. Ratios
+		lineageTag: 0546ca66-04ba-4435-9229-d047e772788c
+
+	measure ROI = 0
+		formatString: 0
+		displayFolder: 7. Ratios
+		lineageTag: b48fb84e-7cfb-42fc-9e90-3ee37af35270
+
+	measure Runway = 0
+		formatString: 0
+		displayFolder: 7. Ratios
+		lineageTag: 204f38d9-60d7-417b-a84a-881fee092f7c
+
+	measure 'Investment to Asset Ratio' = ```
+			
+			    DIVIDE(
+			        [Investments],
+			        [0. Assets]
+			    )
+			```
+		formatString: 0%;-0%;0%
+		displayFolder: 7. Ratios
+		lineageTag: 1db63564-3152-42f2-8dfb-082255b398b8
+
+	measure 'Budget Variance' = 0
+		formatString: 0
+		displayFolder: 7. Ratios
+		lineageTag: e538f32e-3216-4ff0-97c0-0d207d7f7f15
+
+	measure Greetings2 = "Zohaib ✌️"
+		displayFolder: 0. Supporting Measures
+		lineageTag: 597de0b9-4c70-4dfb-8413-99384b596100
+
+	measure Placeholder1 = 1
+		formatString: 0%;-0%;0%
+		displayFolder: 0. Supporting Measures
+		lineageTag: 66b5bd0b-e800-46e0-bd3f-1ab83032a606
+
+	measure 'Spending Title' = ```
+			
+			    "Spending for " &
+			    SWITCH(
+			        SELECTEDVALUE('4. CalculationPeriod'[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: 2. Spending
+		lineageTag: f7a95a51-1d2c-43f1-8cca-4682c327bad4
+
+	measure 'Net Margin Subtitle' = ```
+			
+			    FORMAT(
+			        [Net Margin Dynamic], "0%"
+			    )
+			
+			```
+		displayFolder: 3. Profitability
+		lineageTag: d8ea9db5-ad35-4472-be1d-7e75f63576c1
+
+	measure 'Top Spending Category' = ```
+			
+			VAR MaxCategory = 
+			    CALCULATETABLE(
+			        TOPN(
+			            1,
+			            SUMMARIZE(
+			                '2. Transactions',
+			                '2. Transactions'[Category],
+			                "TotalCategorySpending", [Spending]
+			            ),
+			            [TotalCategorySpending],
+			            DESC
+			        )
+			    )
+			RETURN 
+			    MAXX(MaxCategory, '2. Transactions'[Category])
+			
+			```
+		displayFolder: 2. Spending
+		lineageTag: 6794de9a-b16a-45e6-9f94-11d6acdd2312
+
+	measure Amount = 887285
+		formatString: 0
+		displayFolder: 2. Spending
+		lineageTag: 19a02c53-d7c6-4bbb-adf3-6c10d4f692f2
+
+	measure '25% of Speding' = 0.25 * [Spending]
+		displayFolder: 2. Spending
+		lineageTag: ec91ed36-8957-43be-8c46-d62f41e877b4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '50% of Speding' = 0.50 * [Spending]
+		displayFolder: 2. Spending
+		lineageTag: a98266b6-6946-44ae-ae34-6e54895ed9b8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '75% of Speding' = 0.75 * [Spending]
+		displayFolder: 2. Spending
+		lineageTag: abcacf59-89ba-4839-aa5a-d22d9e6faeb8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TopSpendCategoryTitle = "Top Spend Category - " & [Top Spending Category]
+		displayFolder: 2. Spending
+		lineageTag: e22326dd-afa8-4e76-931f-9d229caf1a60
+
+	measure '1. Cash FCY MYR' = ```
+			
+			    CALCULATE(
+			        CALCULATE(
+			            SUM('2. Transactions'[Wallet Amount]),
+			            FILTER(
+			                '4. Accounts',
+			                '4. Accounts'[AccountType] = "Cash" &&
+			                '4. Accounts'[AccountCurrency] = "MYR"
+			            )
+			        ),
+			        FILTER(
+			            ALL('1. CalendarTable'[Date]),
+			            ISONORAFTER('1. CalendarTable'[Date], MAX('1. CalendarTable'[Date]), DESC)
+			        )
+			    )
+			```
+		formatString: "RM"#,0.00;-"RM"#,0.00;"RM"#,0.00
+		displayFolder: 5. Assets
+		lineageTag: 21cf2154-4fbe-429b-85f1-bf9d69720076
+
+		annotation PBI_FormatHint = {"currencyCulture":"ms-MY"}
+
+	measure '1. Cash LCY MYR' = [1. Cash FCY MYR] * LOOKUPVALUE('3. MYR'[Close], '3. MYR'[Date], MAX('2. Transactions'[Date]))
+		displayFolder: 5. Assets
+		lineageTag: 44b9583b-d16b-4ec3-88f4-c8b1f67ee090
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Liquid Assets Subtitle' = ```
+			
+			    FORMAT(
+			        [5. Liquid Assets %], "0%"
+			    )
+			
+			```
+		displayFolder: 5. Assets
+		lineageTag: 38036219-35a9-4f69-8e77-b8038446065a
+
+	measure Placeholder10 = 10
+		formatString: 0
+		displayFolder: 0. Supporting Measures
+		lineageTag: 4335692c-bd8d-4192-a5e6-cb1046a0123f
+
+	measure '25% of Credit Limit' = 0.25 * [Credit Limit]
+		displayFolder: 7. Ratios
+		lineageTag: d4477cb7-22aa-4e53-ac9b-a16f99898c6a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '50% of Credit Limit' = 0.5 * [Credit Limit]
+		displayFolder: 7. Ratios
+		lineageTag: b07cde9a-012f-46ce-883b-f5e6265924c7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '75% of Credit Limit' = 0.75 * [Credit Limit]
+		displayFolder: 7. Ratios
+		lineageTag: 72df6f4a-a21a-462f-b666-6273096cd746
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Credit Limit Subtitle' = FORMAT( [CC Debt], "0,0") & " / " & FORMAT( [Credit Limit], "0,0")
+		displayFolder: 7. Ratios
+		lineageTag: 4d78faab-04d8-43f1-a4bc-678dde25bedc
+
+	measure 'Credit Limit' = 200000
+		formatString: #,0
+		displayFolder: 6. Liabilities
+		lineageTag: 198e7e38-c51f-4500-802d-e5fef21d224a
+
+	measure 'Placeholder Investment' = 0.75 * [0. Assets]
+		displayFolder: 0. Supporting Measures
+		lineageTag: cb09b357-a46e-4018-af9d-07ef8b76df11
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Diversification Ratio' = ```
+			
+			1 - (
+			    ([3. Real Estate]^2 + [2. Gold]^2) / 
+			    ([3. Real Estate] + [2. Gold])^2
+			)
+			
+			```
+		displayFolder: 7. Ratios
+		lineageTag: fef4856a-85b6-4956-91de-dd64fb8992af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '0. Measures' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

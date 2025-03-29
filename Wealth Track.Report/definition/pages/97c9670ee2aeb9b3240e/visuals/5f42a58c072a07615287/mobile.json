@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerMobileState/1.2.0/schema.json",
+  "objects": {
+    "general": [],
+    "subTotals": [],
+    "columnWidth": [
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "128.46816704248036D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "4. Accounts.Account"
+        }
+      },
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "42.02961247034793D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "Min(4. Accounts.AccountCurrency)"
+        }
+      },
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "70.43946861238067D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "0. Measures.1. Cash FCY"
+        }
+      },
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "66D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "0. Measures.1. Cash LCY"
+        }
+      }
+    ],
+    "grid": [],
+    "values": [
+      {
+        "properties": {
+          "fontSize": {
+            "expr": {
+              "Literal": {
+                "Value": "8D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "columnFormatting": [],
+    "columnHeaders": [],
+    "rowHeaders": [
+      {
+        "properties": {
+          "fontSize": {
+            "expr": {
+              "Literal": {
+                "Value": "8D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "position": {
+    "x": 2.360600950616877,
+    "y": 1791.3712856952293,
+    "z": 14000,
+    "height": 284.98374864572048,
+    "width": 318.74482315730609,
+    "tabOrder": 15000
+  }
+}

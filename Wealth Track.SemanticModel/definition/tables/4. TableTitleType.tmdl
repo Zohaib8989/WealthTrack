@@ -1,0 +1,23 @@
+table '4. TableTitleType'
+	lineageTag: 3887dfab-e332-4ee3-a9fe-009d5b48b56a
+
+	column 'Title Type'
+		lineageTag: d3c3260e-3d8e-4595-8c7a-deb23a5fd795
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Title Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '4. TableTitleType' = calculated
+		mode: import
+		source = ```
+				DATATABLE(
+				    "Title Type", STRING,
+				    { {"Income"}, {"Spending"}, {"Net Income"} }
+				)
+				
+				```
+
+	annotation PBI_Id = 5c55dfb0954b4fe98a2ec24116eed1c1
+

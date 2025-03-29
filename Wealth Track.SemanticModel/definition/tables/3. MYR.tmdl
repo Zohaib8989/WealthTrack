@@ -1,0 +1,43 @@
+table '3. MYR'
+	lineageTag: 8b550c72-164b-4e34-8c57-7a90f8b6fc4a
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4fc628c4-0fc2-4dba-b187-fc881aefd8b7
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 45600166-cbc1-42a1-a543-d308aed43df0
+			defaultHierarchy: LocalDateTable_fec7719e-b59b-4223-a3a4-3b388facea56.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Close
+		dataType: double
+		lineageTag: 73723eda-0927-4bf2-a41f-9a25ca6bf465
+		summarizeBy: sum
+		sourceColumn: Close
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '3. MYR' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://docs.google.com/spreadsheets/d/1VOATRWiNd6tHXjQwL6jE9_2Gm6U-xghIuwqvaDDaYcc/gviz/tq?tqx=out:csv&sheet=MYR"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Close", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

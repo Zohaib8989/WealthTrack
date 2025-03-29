@@ -1,0 +1,63 @@
+table '3. GOLD'
+	lineageTag: 9a92f3a3-0d5c-46a7-ba81-b88534d871bf
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 82598165-bb90-4497-a3e4-4a56b5c2d78c
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: ad92d741-ccad-4f0d-9f8c-859f749198af
+			defaultHierarchy: LocalDateTable_628f087c-80fb-4e78-8f1b-7810c8e25d97.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Close
+		dataType: double
+		lineageTag: 86193fcf-f9f2-4d80-9408-a5a6cbab89ef
+		summarizeBy: sum
+		sourceColumn: Close
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Per Ounce'
+		dataType: double
+		lineageTag: f5960dcc-7bf7-4283-b657-bc932840b4a9
+		summarizeBy: sum
+		sourceColumn: Per Ounce
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Per Gram'
+		dataType: double
+		lineageTag: 87191ef3-8d1b-4df4-9ab6-fdda1a2f79f4
+		summarizeBy: sum
+		sourceColumn: Per Gram
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '3. GOLD' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://docs.google.com/spreadsheets/d/1VOATRWiNd6tHXjQwL6jE9_2Gm6U-xghIuwqvaDDaYcc/gviz/tq?tqx=out:csv&sheet=GOLD"),[Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Close", type number}, {"Per Ounce", type number}, {"Per Gram", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

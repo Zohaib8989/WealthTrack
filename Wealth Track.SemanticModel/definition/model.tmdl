@@ -1,0 +1,41 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.140.1577.0 (25.02)+00af0910c5ca19a229c472b0dfc17a2c488f6b0a
+
+annotation PBI_QueryOrder = ["2. Transactions","0. Measures","3. GOLD","3. USD","3. AED","3. GBP","3. SAR","3. MYR"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table '2. Transactions'
+ref table DateTableTemplate_679ec419-dfae-470e-80e3-3d0f75093ea2
+ref table '0. Measures'
+ref table '1. CalendarTable'
+ref table LocalDateTable_4cc56e74-3996-40cc-adec-6c55a6d92833
+ref table '4. CalculationPeriod'
+ref table '4. TableTitleType'
+ref table '4. Accounts'
+ref table '3. GOLD'
+ref table LocalDateTable_628f087c-80fb-4e78-8f1b-7810c8e25d97
+ref table '3. USD'
+ref table LocalDateTable_083af31b-b129-4a13-9ea6-76d74dd1d287
+ref table '3. AED'
+ref table LocalDateTable_0a7b2a7a-46e4-4a1d-9d92-fb9127d18164
+ref table '3. GBP'
+ref table LocalDateTable_290e99f0-f8dc-4358-82bc-71af3c92ec17
+ref table '3. SAR'
+ref table LocalDateTable_7c8e5f5d-2b6f-4438-820d-b58b24e77195
+ref table '4. TableAssetLiability'
+ref table '4. TableAssetType'
+ref table '3. MYR'
+ref table LocalDateTable_fec7719e-b59b-4223-a3a4-3b388facea56
+
+ref cultureInfo en-US
+

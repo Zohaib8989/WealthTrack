@@ -1,0 +1,62 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerMobileState/1.2.0/schema.json",
+  "objects": {
+    "total": [],
+    "values": [],
+    "columnFormatting": [],
+    "columnWidth": [
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "85.58229643404782D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "2. Transactions.Date"
+        }
+      },
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "117.63528138475291D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "2. Transactions.Payee Name"
+        }
+      },
+      {
+        "properties": {
+          "value": {
+            "expr": {
+              "Literal": {
+                "Value": "97.08385893640492D"
+              }
+            }
+          }
+        },
+        "selector": {
+          "metadata": "Sum(2. Transactions.Transaction Amount)"
+        }
+      }
+    ],
+    "columnHeaders": [],
+    "grid": []
+  },
+  "position": {
+    "x": 3,
+    "y": 1524,
+    "z": 21000,
+    "height": 429,
+    "width": 318,
+    "tabOrder": 21000
+  }
+}

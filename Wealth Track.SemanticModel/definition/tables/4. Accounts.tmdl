@@ -1,0 +1,74 @@
+table '4. Accounts'
+	lineageTag: 99aa8063-7037-4a9b-81fc-b503357253ff
+
+	column Account
+		lineageTag: beffe5f5-213b-457f-840b-b87fd5e1cbb2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: 2. Transactions[Account]
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountCurrency = ```
+			
+			    SWITCH(
+			        TRUE(),
+			        CONTAINSSTRING('4. Accounts'[Account], 7907), "PKR",
+			        CONTAINSSTRING('4. Accounts'[Account], 7401), "PKR",
+			        CONTAINSSTRING('4. Accounts'[Account], 0303), "PKR",
+			        CONTAINSSTRING('4. Accounts'[Account], 2203), "PKR",
+			        CONTAINSSTRING('4. Accounts'[Account], 1849), "PKR",
+			        CONTAINSSTRING('4. Accounts'[Account], 0817), "PKR",
+			        '4. Accounts'[Account] = "Wallet", "PKR",
+			        CONTAINSSTRING('4. Accounts'[Account], 5946), "USD",
+			        CONTAINSSTRING('4. Accounts'[Account], 9089), "USD",
+			        CONTAINSSTRING('4. Accounts'[Account], 4175), "USD",
+			        '4. Accounts'[Account] = "Clearing Account", "USD",
+			        '4. Accounts'[Account] = "UpWork Escrow", "USD",
+			        CONTAINSSTRING('4. Accounts'[Account], "AED"), "AED",
+			        CONTAINSSTRING('4. Accounts'[Account], "GBP"), "GBP",
+			        CONTAINSSTRING('4. Accounts'[Account], "SAR"), "SAR",
+			        CONTAINSSTRING('4. Accounts'[Account], "USD"), "USD",
+			        CONTAINSSTRING('4. Accounts'[Account], "MYR"), "MYR",
+			        "Not Applicable"
+			    )
+			```
+		lineageTag: 664a91ce-8b5c-4de8-ad32-7aaebc6f8864
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountType = ```
+			
+			    SWITCH(
+			        TRUE(),
+			        CONTAINSSTRING('4. Accounts'[Account], "Credit Card"), "Credit Card",
+			        '4. Accounts'[AccountCurrency] = "Not Applicable", "Not Applicable",
+			        "Cash"
+			    )
+			```
+		lineageTag: 36153207-e95f-48ca-98f3-146a7524276a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column LCY/FCY = ```
+			
+			    SWITCH(
+			        TRUE(),
+			        '4. Accounts'[AccountCurrency] = "PKR", "LCY",
+			        '4. Accounts'[AccountCurrency] = "Not Applicable", "Not Applicable",
+			        "FCY"
+			    )
+			```
+		lineageTag: cb3a42ef-1831-430e-b0e6-af3be05c4ec1
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '4. Accounts' = calculated
+		mode: import
+		source = FILTER(VALUES('2. Transactions'[Account]), '2. Transactions'[Account] <> "-")
+
+	annotation PBI_Id = 152a798a62f7451ca3c3c9e1982ca1f5
+

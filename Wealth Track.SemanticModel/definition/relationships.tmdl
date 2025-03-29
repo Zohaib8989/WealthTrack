@@ -1,0 +1,75 @@
+relationship 1d57d1f5-64f5-4595-a48e-891496be0c34
+	joinOnDateBehavior: datePartOnly
+	fromColumn: '1. CalendarTable'.Date
+	toColumn: LocalDateTable_4cc56e74-3996-40cc-adec-6c55a6d92833.Date
+
+relationship a9badb1c-8288-80f7-ad7f-04946bd9742b
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Date
+	toColumn: '1. CalendarTable'.Date
+
+relationship ad92d741-ccad-4f0d-9f8c-859f749198af
+	joinOnDateBehavior: datePartOnly
+	fromColumn: '3. GOLD'.Date
+	toColumn: LocalDateTable_628f087c-80fb-4e78-8f1b-7810c8e25d97.Date
+
+relationship 27e167ce-00c0-45a3-98db-46c293b8a458
+	joinOnDateBehavior: datePartOnly
+	fromColumn: '3. USD'.Date
+	toColumn: LocalDateTable_083af31b-b129-4a13-9ea6-76d74dd1d287.Date
+
+relationship 001f933a-2dd7-4405-b038-4b599459672b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: '3. AED'.Date
+	toColumn: LocalDateTable_0a7b2a7a-46e4-4a1d-9d92-fb9127d18164.Date
+
+relationship 9e66af15-d71e-45c0-92ba-9d072ad6c83d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: '3. GBP'.Date
+	toColumn: LocalDateTable_290e99f0-f8dc-4358-82bc-71af3c92ec17.Date
+
+relationship a9b74f1d-b60b-4e3a-8dc2-78dd5c1d7aee
+	joinOnDateBehavior: datePartOnly
+	fromColumn: '3. SAR'.Date
+	toColumn: LocalDateTable_7c8e5f5d-2b6f-4438-820d-b58b24e77195.Date
+
+relationship 00331677-f11b-3c2c-531f-c018df003078
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Date
+	toColumn: '3. SAR'.Date
+
+relationship 849a84f0-eae7-d361-b378-2daa6e02394a
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Date
+	toColumn: '3. GBP'.Date
+
+relationship 73d322f7-e8e5-1c03-e3cc-67e3a75985d6
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Date
+	toColumn: '3. USD'.Date
+
+relationship 4d22d907-3a16-d2c7-6134-05499d8e6159
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Date
+	toColumn: '3. AED'.Date
+
+relationship d9689f62-a4ac-9b1b-a655-6619734976d4
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Date
+	toColumn: '3. GOLD'.Date
+
+relationship 45600166-cbc1-42a1-a543-d308aed43df0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: '3. MYR'.Date
+	toColumn: LocalDateTable_fec7719e-b59b-4223-a3a4-3b388facea56.Date
+
+relationship 594c789b-9a12-3c39-0aa9-08011a2f154e
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Date
+	toColumn: '3. MYR'.Date
+
+relationship b3e6b564-fef4-518a-2e9a-dca03830aa5c
+	crossFilteringBehavior: bothDirections
+	fromColumn: '2. Transactions'.Account
+	toColumn: '4. Accounts'.Account
+

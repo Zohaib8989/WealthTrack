@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmarksMetadata/1.0.0/schema.json",
+  "items": [
+    {
+      "name": "03151964b126584eea9b",
+      "displayName": "Historic Bar Chart ",
+      "children": [
+        "13d868b324b0303733e4",
+        "f13ec6b17723a4042aeb",
+        "03bd4ae3d0163c8e0000"
+      ]
+    },
+    {
+      "name": "931e0c078685ac9bb40d",
+      "displayName": "Inc & Spend Table",
+      "children": [
+        "ab4476180a34da7ce630",
+        "d4c9ff29602697000ae9"
+      ]
+    },
+    {
+      "name": "45628c4b078e36e3bd06",
+      "displayName": "Balances",
+      "children": [
+        "cebd96f8b5c80527bc0d",
+        "a50ca8f1de08193543ed"
+      ]
+    },
+    {
+      "name": "eb18f2801043dd3e8d41",
+      "displayName": "Transactions",
+      "children": [
+        "bfb390816c5041e10d02",
+        "dfece54ba0c99161e7a7"
+      ]
+    },
+    {
+      "name": "921a6ab7cdc6b151be1d",
+      "displayName": "Group 5",
+      "children": [
+        "4262b2783ea91c44571d",
+        "573e539d8aaa06a96140",
+        "8ce4a3ade905837864c8",
+        "c9b055a06c35d702d79b"
+      ]
+    },
+    {
+      "name": "005cb6ca519a45cacec1",
+      "displayName": "Group 6",
+      "children": [
+        "ce422cf657ab906584d0",
+        "611939605a01257e791a",
+        "be3c1b7832920584866c",
+        "3571a076875eb9e42703"
+      ]
+    }
+  ]
+}

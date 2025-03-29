@@ -1,0 +1,43 @@
+table '3. SAR'
+	lineageTag: bdb9ac65-9df9-4155-a636-e601e392103a
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3a129996-4c10-44ec-9781-fe4620d5818b
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: a9b74f1d-b60b-4e3a-8dc2-78dd5c1d7aee
+			defaultHierarchy: LocalDateTable_7c8e5f5d-2b6f-4438-820d-b58b24e77195.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Close
+		dataType: double
+		lineageTag: f8a81779-b99b-4845-8e40-ddc7646f9164
+		summarizeBy: sum
+		sourceColumn: Close
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '3. SAR' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://docs.google.com/spreadsheets/d/1VOATRWiNd6tHXjQwL6jE9_2Gm6U-xghIuwqvaDDaYcc/gviz/tq?tqx=out:csv&sheet=SAR"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Close", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

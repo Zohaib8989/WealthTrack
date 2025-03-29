@@ -1,0 +1,73 @@
+table '1. CalendarTable'
+	lineageTag: 145ec804-5e70-493a-8ea9-9a556e41d332
+
+	column Date
+		formatString: Long Date
+		lineageTag: 7734fd51-a224-466c-b72e-f67a7982fd6f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 1d57d1f5-64f5-4595-a48e-891496be0c34
+			defaultHierarchy: LocalDateTable_4cc56e74-3996-40cc-adec-6c55a6d92833.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year = YEAR('1. CalendarTable'[Date])
+		formatString: 0
+		lineageTag: 2a65c7e2-4935-413b-9ae2-5028f6f798c6
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month No.' = '1. CalendarTable'[Date].[MonthNo]
+		formatString: 0
+		lineageTag: b0484e25-6923-48cd-9c9a-bd017a06394c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month (MMM)' = LEFT(FORMAT('1. CalendarTable'[Date], "MMM"),1)
+		lineageTag: 768fbe01-334f-4199-8794-a646f7fa1e11
+		summarizeBy: none
+		sortByColumn: 'Month No.'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Qtr = '1. CalendarTable'[Date].[Quarter]
+		lineageTag: 99b2ebaf-002e-43a5-98af-00c46f0a884f
+		summarizeBy: none
+		sortByColumn: 'QTR No.'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'QTR No.' = '1. CalendarTable'[Date].[QuarterNo]
+		formatString: 0
+		lineageTag: 91d7f253-530e-4513-8b95-fcab31bd6f87
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day No.' = '1. CalendarTable'[Date].[Day]
+		formatString: 0
+		lineageTag: 4d812584-f286-417c-9140-27fa3e7466e9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day (DDD)' = FORMAT('1. CalendarTable'[Date], "DDD")
+		lineageTag: 86560ea2-9039-4e91-9bbb-1a750d1e7a48
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '1. CalendarTable' = calculated
+		mode: import
+		source = CALENDAR(DATE(2023, 07, 01), TODAY())
+
+	annotation PBI_Id = 9c0150d396e34c9a930787ff1acce491
+

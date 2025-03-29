@@ -1,0 +1,43 @@
+table '3. GBP'
+	lineageTag: 8eda4ef1-ecd8-4208-b2ea-b4dbf0b8ade5
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b409145b-3523-4e57-9e8e-3831e1c125e3
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 9e66af15-d71e-45c0-92ba-9d072ad6c83d
+			defaultHierarchy: LocalDateTable_290e99f0-f8dc-4358-82bc-71af3c92ec17.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Close
+		dataType: double
+		lineageTag: 5ad33368-b90d-44be-872c-61ae7ab92643
+		summarizeBy: sum
+		sourceColumn: Close
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '3. GBP' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://docs.google.com/spreadsheets/d/1VOATRWiNd6tHXjQwL6jE9_2Gm6U-xghIuwqvaDDaYcc/gviz/tq?tqx=out:csv&sheet=GBP"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Close", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

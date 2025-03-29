@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerMobileState/1.2.0/schema.json",
+  "objects": {
+    "bookmarks": [
+      {
+        "properties": {
+          "selectedBookmark": {
+            "expr": {
+              "Literal": {
+                "Value": "'13d868b324b0303733e4'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "layout": [],
+    "outline": [],
+    "fill": [],
+    "text": [
+      {
+        "properties": {
+          "fontFamily": {
+            "expr": {
+              "Literal": {
+                "Value": "'''Segoe UI Light'', wf_segoe-ui_light, helvetica, arial, sans-serif'"
+              }
+            }
+          }
+        },
+        "selector": {
+          "id": "default"
+        }
+      },
+      {
+        "properties": {
+          "fontFamily": {
+            "expr": {
+              "Literal": {
+                "Value": "'''Segoe UI Light'', wf_segoe-ui_light, helvetica, arial, sans-serif'"
+              }
+            }
+          }
+        },
+        "selector": {
+          "id": "selected"
+        }
+      }
+    ],
+    "shape": []
+  },
+  "position": {
+    "x": 130,
+    "y": 210,
+    "z": 8000,
+    "height": 25,
+    "width": 181,
+    "tabOrder": 6000
+  }
+}

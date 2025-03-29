@@ -1,0 +1,43 @@
+table '4. TableAssetLiability'
+	lineageTag: 00fc2443-954b-4321-a704-74a1f5ca22f7
+
+	column Type
+		lineageTag: cc258841-ddf4-43c6-a35f-59416b26a8b6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		formatString: "Rs"#,0.00;-"Rs"#,0.00;"Rs"#,0.00
+		lineageTag: 8994952c-1cbf-4ea5-a8a3-7d644e399787
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Amount]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-PK"}
+
+	partition '4. TableAssetLiability' = calculated
+		mode: import
+		source = ```
+				
+				UNION(
+				    SELECTCOLUMNS(
+				        ROW("Type", "Assets", "Amount", [0. Assets]),
+				        "Type", "Assets",
+				        "Amount", [0. Assets]
+				    ),
+				    SELECTCOLUMNS(
+				        ROW("Type", "Liabilities", "Amount", [Liabilities]),
+				        "Type", "Liabilities",
+				        "Amount", [Liabilities]
+				    )
+				)
+				
+				```
+
+	annotation PBI_Id = 768fbb1f0a964c57a4a285afe7cfada7
+

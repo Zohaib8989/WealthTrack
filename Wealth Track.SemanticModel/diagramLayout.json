@@ -1,0 +1,193 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1285,
+            "y": 485.5361328125
+          },
+          "nodeIndex": "0. Measures",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 206,
+            "y": 0
+          },
+          "nodeIndex": "1. CalendarTable",
+          "size": {
+            "height": 314.5361328125,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 558,
+            "y": 0
+          },
+          "nodeIndex": "2. Transactions",
+          "size": {
+            "height": 498.5361328125,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 211,
+            "y": 533.4580078125
+          },
+          "nodeIndex": "3. AED",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 869,
+            "y": 524.2939453125
+          },
+          "nodeIndex": "3. GBP",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 868,
+            "y": 370.5478515625
+          },
+          "nodeIndex": "3. SAR",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 214,
+            "y": 373.5673828125
+          },
+          "nodeIndex": "3. USD",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 215,
+            "y": 690.9736328125
+          },
+          "nodeIndex": "3. GOLD",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 883,
+            "y": 0
+          },
+          "nodeIndex": "4. Accounts",
+          "size": {
+            "height": 261.9111328125,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1472,
+            "y": 137.5361328125
+          },
+          "nodeIndex": "4. CalculationPeriod",
+          "nodeLineageTag": "879aa236-ec03-4571-8466-6b57ccf51974",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1363,
+            "y": 333.48681640625
+          },
+          "nodeIndex": "4. TableAssetLiability",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1536,
+            "y": 550.48681640625
+          },
+          "nodeIndex": "4. TableAssetType",
+          "nodeLineageTag": "8d01a724-f26a-470f-9c89-5fbd8c1ca467",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1285,
+            "y": 0
+          },
+          "nodeIndex": "4. TableTitleType",
+          "size": {
+            "height": 238.0361328125,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 871,
+            "y": 691.48681640625
+          },
+          "nodeIndex": "3. MYR",
+          "nodeLineageTag": "8b550c72-164b-4e34-8c57-7a90f8b6fc4a",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

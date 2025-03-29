@@ -1,0 +1,141 @@
+table '2. Transactions'
+	lineageTag: 79fd3b20-240e-469c-ab65-615e7b02a63c
+
+	column Date
+		dataType: dateTime
+		formatString: dd-mmm-yy
+		lineageTag: 5d69423a-842e-4893-804a-f4bb73d8041a
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Ref. No.'
+		dataType: string
+		lineageTag: c2989d67-63d1-4ab5-9ca1-75b16ccf71fb
+		summarizeBy: none
+		sourceColumn: Ref. No.
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Payee Name'
+		dataType: string
+		lineageTag: 55ef36de-f7bc-4ec6-912a-0be8cbaa4214
+		summarizeBy: none
+		sourceColumn: Payee Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: 910b049d-685f-4150-b30e-2edaed36a45a
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 72d9573e-33fa-44b8-97bc-36c92d27466a
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Amount'
+		dataType: double
+		lineageTag: 2bafadec-ed92-4b31-8b36-6f4ce4e8b8ca
+		summarizeBy: sum
+		sourceColumn: Transaction Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Account
+		dataType: string
+		lineageTag: 51e85539-2748-49cc-a61e-6c37d569a600
+		summarizeBy: none
+		sourceColumn: Account
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rate
+		dataType: double
+		lineageTag: abfe959e-b8ff-4d18-aebf-0cfde0038924
+		summarizeBy: sum
+		sourceColumn: Rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Wallet Amount'
+		dataType: double
+		lineageTag: 03a8c3c7-a55e-4090-989a-5cef4f39295e
+		summarizeBy: sum
+		sourceColumn: Wallet Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Status
+		dataType: string
+		lineageTag: 45a96bf1-aeb5-4191-9175-49e9f6eca6ae
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tag
+		dataType: string
+		lineageTag: ca8e265e-51c4-4310-bbab-68404379c182
+		summarizeBy: none
+		sourceColumn: Tag
+
+		annotation SummarizationSetBy = Automatic
+
+	column Memo
+		dataType: string
+		lineageTag: f5a2d2a7-edeb-4ba3-8431-3d020974df2f
+		summarizeBy: none
+		sourceColumn: Memo
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Gold Weight'
+		dataType: double
+		lineageTag: 13faf884-72fc-4360-93ae-493e742386f3
+		summarizeBy: sum
+		sourceColumn: Gold Weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '2. Transactions' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://docs.google.com/spreadsheets/d/1VOATRWiNd6tHXjQwL6jE9_2Gm6U-xghIuwqvaDDaYcc/gviz/tq?tqx=out:csv&sheet=Transactions"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Ref. No.", type text}, {"Payee Name", type text}, {"Type", type text}, {"Category", type text}, {"Transaction Amount", type number}, {"Account", type text}, {"Rate", type number}, {"Wallet Amount", type number}, {"Status", type text}, {"Tag", type text}, {"Memo", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "Gold Weight", each if Text.Start([Tag], 1) = "-" and Text.Length([Tag]) > 1 then
+				    try Number.FromText([Tag]) otherwise 0
+				  else if Text.Select([Tag], {"0".."9", "."}) = [Tag] then
+				    try Number.FromText([Tag]) otherwise 0
+				  else
+				    0),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Gold Weight", type number}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

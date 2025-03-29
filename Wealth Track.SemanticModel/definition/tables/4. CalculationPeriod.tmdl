@@ -1,0 +1,47 @@
+table '4. CalculationPeriod'
+	lineageTag: 879aa236-ec03-4571-8466-6b57ccf51974
+
+	column Period
+		lineageTag: 512f49dc-8ced-4baa-a46c-dfa3ab2f8120
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Period]
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodSort = ```
+			
+			    SWITCH(
+			        TRUE(),
+			        '4. CalculationPeriod'[Period] = "L12M", 1,
+			        '4. CalculationPeriod'[Period] = "L6M", 2,
+			        '4. CalculationPeriod'[Period] = "L3M", 3,
+			        '4. CalculationPeriod'[Period] = "YTD", 3, // Add this line if you want to include YTD sorting
+			        -1 // Default value for "Not Applicable" cases
+			    )
+			
+			```
+		formatString: 0
+		lineageTag: 850d0e24-6981-4d71-842d-d6c147aa91db
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '4. CalculationPeriod' = calculated
+		mode: import
+		source = ```
+				
+				    DATATABLE(
+				        "Period", STRING,
+				        {
+				            {"YTD"},
+				            {"L12M"},
+				            {"L6M"},
+				            {"L3M"}
+				        }
+				    )
+				
+				```
+
+	annotation PBI_Id = 7c911e4ab7594914916c1f3595040066
+

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerMobileState/1.2.0/schema.json",
+  "objects": {
+    "bookmarks": [
+      {
+        "properties": {
+          "selectedBookmark": {
+            "expr": {
+              "Literal": {
+                "Value": "'cebd96f8b5c80527bc0d'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "fill": [],
+    "outline": [],
+    "text": [],
+    "shape": [],
+    "layout": []
+  },
+  "position": {
+    "x": 195.96774193548399,
+    "y": 1792.6876876876877,
+    "z": 15000,
+    "height": 25.36936936936937,
+    "width": 115.62096774193547,
+    "tabOrder": 17000
+  }
+}

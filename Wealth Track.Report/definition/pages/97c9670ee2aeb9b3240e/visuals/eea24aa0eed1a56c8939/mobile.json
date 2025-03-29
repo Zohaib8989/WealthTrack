@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerMobileState/1.2.0/schema.json",
+  "objects": {
+    "bookmarks": [
+      {
+        "properties": {
+          "selectedBookmark": {
+            "expr": {
+              "Literal": {
+                "Value": "'573e539d8aaa06a96140'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "layout": [],
+    "outline": [],
+    "fill": [],
+    "text": [],
+    "shape": []
+  },
+  "position": {
+    "x": 74,
+    "y": 204,
+    "z": 30000,
+    "height": 26,
+    "width": 238,
+    "tabOrder": 29000
+  }
+}
